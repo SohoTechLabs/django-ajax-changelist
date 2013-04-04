@@ -1,0 +1,34 @@
+# SCSS cache
+.sass-cache/
+
+# Doc builds
+/docs/_build/*
+
+# Packages
+*.py[co]
+*.sw[po]
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+var
+sdist
+develop-eggs
+.installed.cfg
+celerybeat-schedule
+celerybeat-schedule.db
+
+# Installer logs
+pip-log.txt
+
+# Misc
+.DS_Store
+.noseids
+tmp/*
+*~
+*.mo
+*.sqlite
+/static/*
+/.env

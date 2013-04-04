@@ -1,0 +1,58 @@
+/* Row style */
+tr.ajx-active {
+  background: rgba(65, 118, 144, 0.2);
+}
+
+
+
+/* Cell Style */
+.ajx-inline-edit-cell {
+  cursor: pointer;
+}
+
+.ajx-inline-edit-cell.ajx-active {
+  cursor: default;
+  background: rgba(65, 118, 144, 0.2);
+}
+
+
+
+/* Row/cell transitions */
+.ajx-inline-edit-cell, tr {
+  -webkit-transition: background-color 0.2s ease-in;
+  -moz-transition: background-color 0.2s ease-in;
+  -o-transition: background-color 0.2s ease-in;
+  transition: background-color 0.2s ease-in;
+}
+
+
+
+/* Form style */
+.ajx-inline-form {
+  display: none;
+  padding: 11px;
+}
+
+.ajx-inline-form p {
+  width: 90%;
+}
+
+.ajx-inline-edit-cell.ajx-active .ajx-inline-form {
+  display: block;
+  position: absolute;
+  top: 20%;
+  right: 20%;
+  background: #fff;
+  border: 1px #999 solid;
+  box-shadow: 2px 2px 13px rgba(0,0,0, 0.5);
+}
+
+.ajx-form-close-button {
+  float: right;
+  margin: 5px;
+  font-weight: bold;
+  font-size: 230%;
+  position: absolute;
+  right: 2px;
+  top: 2px;
+}

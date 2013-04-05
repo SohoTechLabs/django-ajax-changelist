@@ -16,7 +16,7 @@
         postData += (postData ? '&' : '') + 'field=' + targetField +
             '&prefix=' + prefix;
 
-        $.post('/admin/gif/taggedimage/' + id, postData, function (data) {
+        $.post(id, postData, function (data) {
             form.data('dirty', false);
             callback(data);
         });

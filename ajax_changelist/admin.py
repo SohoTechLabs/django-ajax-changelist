@@ -21,7 +21,7 @@ def get_printable_field_value(instance, fieldname):
 
 
 """
-NOTE: be cautious setting M2M fields in `ajax_fields`.
+NOTE: be cautious setting M2M fields in `ajax_list_display`.
 
 The only currently supported M2M use case is for relations
 to tables with a small number (< ~50) records.  For example,
@@ -83,16 +83,16 @@ class AjaxModelAdmin(admin.ModelAdmin):
 
         HANDLER_NAME_TPL = "_%s_ajax_handler"
 
-        if not hasattr(self, 'ajax_fields'):
-            self.ajax_fields = []
+        if not hasattr(self, 'ajax_list_display'):
+            self.ajax_list_display = []
 
         self.list_display = list(self.list_display)
         self.list_display = self.list_display + map(lambda name: HANDLER_NAME_TPL % name,
-                self.ajax_fields)
+                self.ajax_list_display)
 
         super(AjaxModelAdmin, self).__init__(*args, **kwargs)
 
-        for name in self.ajax_fields:
+        for name in self.ajax_list_display:
             setattr(self, HANDLER_NAME_TPL % name,
                     self._get_field_handler(name))
 

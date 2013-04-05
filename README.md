@@ -10,21 +10,33 @@ AJAX editing of fields from the changelist is useful when you need to quickly ch
 Usage
 ---------
 
+1. Add `ajax_changelist` to your INSTALLED_APPS.
+
+2. Register an Admin class that inherits from AjaxModelAdmin:
+
 ```python
+from ajax_changelist.admin import AjaxModelAdmin
+
 class BearAdmin(AjaxModelAdmin):
   form = BearForm  # usual form you'd use for your ModelAdmin here, nothing special needed
 
   # Specify the fields you'd like to be able to edit via AJAX here:
-  ajax_fields = ('snout_length', 'honey_affinity_score',)
+  ajax_list_display = ('snout_length', 'honey_affinity_score',)
   
   # Specify the remainder of the fields you'd like to show in the changelist view:
+  #   (don't specify the AJAX fields here)
   list_display = ('name', 'is_fictional',)
+
+...
+
+admin.site.register(Bear, BearAdmin)
+
 ```
 
 Form field/widget display approach
 --------------------------------------
 
-To take advantage of Django's form widgets, widgets are rendered on the serverside.  Currently they are rendered inline in the changelist view, though retrieving via AJAX would be more efficient for some field types.
+To take advantage of Django's form widgets, widgets are rendered serverside.  Currently they are rendered inline in the changelist view, though retrieving via AJAX would be more efficient for some field types.
 
 Known Issues
 -----------------

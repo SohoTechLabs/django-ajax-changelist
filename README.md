@@ -1,7 +1,7 @@
 Django AJAX Changelist
 ===============================
 
-*NOTE: this project is currently untested, lacks detailed documentation, and has only been used in production for a limited SelectField use case.  The goal of the project is to support inline editing of all field types (using their corresponding widgets) from the Django admin changelist view.*
+**NOTE: this app is currently alpha-quality. Please test it thoroughly in a development environment before deciding whether to integrate it to your project, and note the list of known issues.**
 
 This project extends Django ModelAdmin to support editing specified fields directly from the changelist (the Django admin's listview of objects of a given Model).
 

@@ -20,36 +20,18 @@ def get_printable_field_value(instance, fieldname):
     return field_value
 
 
-"""
-NOTE: be cautious setting M2M fields in `ajax_list_display`.
-
-The only currently supported M2M use case is for relations
-to tables with a small number (< ~50) records.  For example,
-relations to a model representing categories for news items.
-
-If you do use this for M2M, to reduce queries when the admin
-you should prefetch - you can do so by adding the following
-queryset() method to your subclass of AjaxModelFormView:
-
-    def queryset(self, request):
-        queryset = self.model.original_manager.get_query_set()
-        queryset = queryset.prefetch_related('NAME_OF_M2M_FIELD')
-        return queryset
-"""
-
-
 class AjaxModelFormView(View):
-    """ Handle AJAX updates of a single field on an object
-
-        Usage:
-
-        my_model_form = AjaxModelFormView.as_view(model=MyModel)
+    """ Handles AJAX updates of a single field on an object
+        (You likely don't need to use this directly as the admin
+        registers a URL for it itself.)
     """
 
     model = None
+    valid_fields = None
 
-    def __init__(self, model, **kwargs):
+    def __init__(self, model, valid_fields, **kwargs):
         self.model = model
+        self.valid_fields = valid_fields
 
     def post(self, request, object_id, *args, **kwargs):
         if not request.user or not request.user.is_staff:
@@ -59,6 +41,10 @@ class AjaxModelFormView(View):
 
         fieldname = request.pop('field', None)[0]
         form_prefix = request.pop('prefix', None)[0]
+
+        # prevent setting fields that weren't made AJAX-editable
+        if fieldname not in self.valid_fields:
+            return http.HttpResponseBadRequest()
 
         ItemForm = modelform_factory(self.model, fields=(fieldname,))
         instance = get_object_or_404(self.model, pk=object_id)
@@ -102,7 +88,8 @@ class AjaxModelAdmin(admin.ModelAdmin):
         urls = super(AjaxModelAdmin, self).get_urls()
         list_urls = patterns('',
                 (r'^(?P<object_id>\d+)$',
-                 AjaxModelFormView.as_view(model=self.model)))
+                 AjaxModelFormView.as_view(model=self.model,
+                                           valid_fields=self.ajax_list_display)))
         return list_urls + urls
 
     def _get_field_handler(self, fieldname):

@@ -38,6 +38,11 @@ Form field/widget display approach
 
 To take advantage of Django's form widgets, widgets are rendered serverside.  Currently they are rendered inline in the changelist view, though retrieving via AJAX would be more efficient for some field types.
 
+Django Versions Tested
+--------------------------
+
+1.4.3, 1.5.1
+
 Known Issues
 -----------------
 

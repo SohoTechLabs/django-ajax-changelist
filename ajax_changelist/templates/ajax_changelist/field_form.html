@@ -1,0 +1,7 @@
+<div class="ajx-inline-edit">
+  <div id="{{ object_id }}_{{ field_name }}_value" class="ajx-inline-form-value">{{ field_value }}</div>
+  <div id="inlineForm{{ object_id }}_{{ field_name }}"
+    data-form-id="{{ object_id }}"
+    data-field="{{ field_name }}" data-prefix="c{{ object_id }}"
+    class="ajx-inline-form hidden">{{ form|safe }}</div>
+</div>

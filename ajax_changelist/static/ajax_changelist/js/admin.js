@@ -61,7 +61,7 @@
             e.stopImmediatePropagation();
             e.preventDefault();
             FormUtil.post($(this).closest('.ajx-inline-form'), function (response) {
-                activeEditCell.find('.ajx-inline-form-value').html(response);
+                activeEditCell.find('.ajx-inline-form-value').text(response);
                 FormUtil.hide();
             });
         });

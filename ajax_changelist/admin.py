@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.db import models
 from django.forms.models import modelform_factory
 from django.shortcuts import get_object_or_404
+from django.template import loader, Context
 from django.views.generic import View
 
 
@@ -82,6 +83,9 @@ class AjaxModelAdmin(admin.ModelAdmin):
             setattr(self, HANDLER_NAME_TPL % name,
                     self._get_field_handler(name))
 
+        self.ajax_item_template = loader.get_template('ajax_changelist/'
+                                                      'field_form.html')
+
     def get_urls(self):
         """ Add endpoint for saving a new field value. """
 
@@ -103,21 +107,13 @@ class AjaxModelAdmin(admin.ModelAdmin):
 
             field_value = get_printable_field_value(obj, fieldname)
 
-            # Render elements including initial field value for display as
-            # plain text, plus form for editing the field.
-            form_html = """
-                <div class="ajx-inline-edit">
-                <div id="{object_id}_{field_name}_value" class="ajx-inline-form-value">{field_value}</div>
-                <div id="inlineForm{object_id}_{field_name}"
-                        data-form-id="{object_id}"
-                        data-field="{field_name}" data-prefix="c{object_id}"
-                        class="ajx-inline-form hidden">{form}</div>
-                </div>
-                """.format(object_id=obj.id, field_name=fieldname,
-                           form=form.as_p(),
-                           field_value=field_value)
-
-            return form_html
+            # Render the field value and edit form
+            return self.ajax_item_template.render(Context({
+                'object_id': obj.id,
+                'field_name': fieldname,
+                'form': form.as_p(),
+                'field_value': field_value
+            }))
 
         handler_function.allow_tags = True
         handler_function.short_description = fieldname
